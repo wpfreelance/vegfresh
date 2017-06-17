@@ -1,0 +1,20 @@
+{% comment %}
+  DO NOT MODIFY THIS FILE DIRECTLY. YOU CAN COPY AND PASTE INTO A NEW SNIPPET.
+  THIS FILE WILL BE OVERWRITTEN.
+{% endcomment %}
+<div class="custom-fields-wrapper">
+
+            {% if product.metafields.custom_fields["additional_description_"] != blank %}
+            <div class="custom-field custom-field__additional-description- custom-field__type--html">
+                <h3 class="custom-field--title">Additional Description</h3>
+                <div class="custom-field--value">{{ product.metafields.custom_fields["additional_description_"] }}</div>
+              </div>
+            {% endif %}
+
+            {% if product.metafields.custom_fields["ingredients_"] != blank %}
+            <div class="custom-field custom-field__ingredients- custom-field__type--html">
+                <h3 class="custom-field--title">Ingredients </h3>
+                <div class="custom-field--value">{{ product.metafields.custom_fields["ingredients_"] }}</div>
+              </div>
+            {% endif %}
+</div>

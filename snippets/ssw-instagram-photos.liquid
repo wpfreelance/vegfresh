@@ -1,0 +1,49 @@
+{% if ssw-instagram-photos %}
+    {% assign ssw_instagram_widget_data = ssw-instagram-photos %}
+    {% if ssw_instagram_widget_data.gallery_id %}
+        {% assign ssw_instagram_gallery_id = ssw_instagram_widget_data.gallery_id %}
+    {% else %}
+        {% assign ssw_instagram_gallery_id = 0 %}
+    {% endif %}
+    {% if ssw_instagram_widget_data.type %}
+        {% assign ssw_instagram_type = ssw_instagram_widget_data.type %}
+    {% else %}
+        {% assign ssw_instagram_type = 'listing' %}
+    {% endif %}
+    {% if ssw_instagram_widget_data.product_id %}
+        {% assign ssw_instagram_product_id = ssw_instagram_widget_data.product_id %}
+    {% else %}
+        {% assign ssw_instagram_product_id = 0 %}
+    {% endif %}
+{% else %}
+    {% assign ssw_instagram_gallery_id = 0 %}
+    {% assign ssw_instagram_type = 'listing' %}
+    {% assign ssw_instagram_product_id = 0 %}
+{% endif %}
+<div id="ssw-instagram-photos-html-{{ ssw_instagram_gallery_id }}-{{ ssw_instagram_type }}">
+    <div class="ssw-page-loading">
+        <span class="ssw-spin ssw-loader"></span>
+    </div>
+</div>
+<script type="text/javascript">
+    if(typeof sswInstagramPhotosSliderInterval === 'undefined'){
+        var sswInstagramPhotosSliderInterval = {};
+    }
+    if(typeof sswInstagramPhotosSliderInterval['{{ ssw_instagram_type }}{{ ssw_instagram_gallery_id }}'] === 'undefined'){
+        sswInstagramPhotosSliderInterval['{{ ssw_instagram_type }}{{ ssw_instagram_gallery_id }}'] = setInterval(function(){
+            if(typeof sswJqLoaded !== 'undefined' && sswJqLoaded){
+                clearInterval(sswInstagramPhotosSliderInterval['{{ ssw_instagram_type }}{{ ssw_instagram_gallery_id }}']);
+                var data = {
+                    'gallery_id': {{ ssw_instagram_gallery_id }},
+                    'type': '{{ ssw_instagram_type }}',
+                    'product_id': {{ ssw_instagram_product_id }},
+                    'module': 'service',
+                    'name': 'InstagramPhotos'
+                };
+                ssw.get(sswProxyUrl + '/lite2/core/widget/index', data, function(response){
+                    ssw('#ssw-instagram-photos-html-' + data.gallery_id + '-' + data.type).html(response);
+                });
+            }
+        }, 300);
+    }
+</script>

@@ -1,0 +1,114 @@
+<!-- /templates/index.liquid -->
+{% comment %}
+
+This is the homepage of your site.
+
+More info on global variables (available on all templates):
+- http://docs.shopify.com/themes/liquid-variables/global
+{% endcomment %}
+<div class="grid-uniform wpf_wrapper">
+
+  <h2 class="text-center">{{ 'homepage.sections.frontpage_title' | t }}</h2>
+  
+</div>
+
+{% comment %}
+Use class grid-uniform to have evenly sized columns clear
+each other properly at each breakpoint.
+{% endcomment %}
+
+<div class="grid-uniform wpf_wrapper">
+
+
+  {% comment %}
+  Loop through products in your Frontpage collection.
+  This collection is created by default, but you must add products to it.
+  {% endcomment %}
+  {% for product in collections.frontpage.products limit:4 %}
+
+  {% comment %}
+  Change the grid item width by using classes from the grid in
+  the grid_item_width variable.
+
+  Example:
+  - {% assign grid_item_width = 'large--one-third medium--one-half' %}
+  {% endcomment %}
+  {% assign grid_item_width = 'large--one-quarter medium--one-half' %}
+  {% include 'wpf-product-grid-item' %}
+
+  {% else %}
+  {% comment %}
+  For onboarding new users to your theme, we add some default products and onboarding tutorials to help populate their store
+  {% endcomment %}
+  {% unless emptyState %}
+  {{ 'theme-onboarding.css' | global_asset_url | stylesheet_tag }}
+  {% assign emptyState = true %}
+  {% endunless %}
+
+  {% include 'onboarding-featured-products' %}
+
+  {% endfor %}
+
+
+</div>
+
+{% comment %}
+Loop through three recent blog articles with the following code.
+
+Since we're not on the blog template, we need to define the blog
+handle we want to focus on. For this example we'll use the default 'news',
+but you can create a blog page-specific content if you want.
+{% endcomment %}
+
+<div class="grid wpf_wrapper">
+
+  <h2 class="text-center">{{ 'homepage.sections.news_title' | t }}</h2>
+
+  {% for article in blogs['news'].articles limit:3 %}
+
+
+
+  <div class="grid__item large--one-third blog_container">
+    <div class="blog">
+
+
+      {% if article.image %}<img src="{{ article.image.src | img_url: 'large' }}" class="img-responsive" alt="Article Image">{% endif %}
+      <div class="blog_inner">
+
+
+        <h3><a href="{{ article.url }}">{{ article.title }}</a></h3>
+
+
+        {% comment %}
+        Add a surrounding div with class 'rte' to anything that will come from the rich text editor.
+        Since this is just a listing page, you can either use the excerpt or truncate the full article.
+        {% endcomment %}
+        <div class="rte">
+          {% if article.excerpt.size > 0 %}
+          {{ article.excerpt }}
+          {% else %}
+          <p class="wpf_blog">{{ article.content | strip_html | truncatewords: 40 }}</p>
+          {% endif %}
+        </div>
+
+        {% comment %}
+        Show off meta information like number of comments and tags.
+        {% endcomment %}
+        <ul>
+          {% if blog.comments_enabled? %}
+          <li>
+            <a href="{{ article.url }}#comments">
+              {{ article.comments_count }}
+              {{ 'blogs.comments.with_count' | t: count: article.comments_count }}
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+        <p><i class="fa fa-calendar" aria-hidden="true"></i>
+          <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'month_day_year' }}</time></p>
+          <p><a href="{{ article.url }}"><button type="button" class="btn btn-default">Read More</button></a></p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>

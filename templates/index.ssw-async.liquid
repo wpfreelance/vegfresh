@@ -1,0 +1,35 @@
+{% layout none %}
+{% include 'ssw-langs' with 1 %}
+<div id="ssw-discount-modal" class="ssw-modal ssw-fade" aria-hidden="true" role="modal">
+    <div class="ssw-modal-dialog">
+        <div class="ssw-modal-content">
+            <div class="ssw-modal-body">
+                <button type="button" class="ssw-close" data-dismiss="ssw-modal" aria-hidden="true">&times;</button>
+                <p id="discount-instructions"> {{ ssw_translate_your_discount_code }}</p>
+                <div class="h1" id="ssw-discount-code"></div>
+                <br />
+                <span id="discount-date"></span>
+            </div>
+        </div>
+    </div>
+</div>
+{% capture ssw_helpers %}{% include 'ssw-helpers' %}{% endcapture %}
+{% unless ssw_helpers contains 'Liquid error' %}
+	{{ ssw_helpers }}
+{% endunless %}
+{% capture the_snippet_content %}{% include 'ssw-cart-modal' %}{% endcapture %}
+{% unless the_snippet_content contains 'Liquid error' %}
+    {{ the_snippet_content }}
+{% endunless %}
+{% capture the_snippet_content %}{% include 'ssw-product-modal' %}{% endcapture %}
+{% unless the_snippet_content contains 'Liquid error' %}
+    {{ the_snippet_content }}
+{% endunless %}
+{% if customer %}
+
+{% else %}
+    {% capture the_snippet_content %}{% include 'ssw-suggest-login' %}{% endcapture %}
+    {% unless the_snippet_content contains 'Liquid error' %}
+    {{ the_snippet_content }}
+    {% endunless %}
+{% endif %}

@@ -1,0 +1,75 @@
+<!-- /snippets/blog-sidebar.liquid -->
+{% comment %}
+Recent blog posts
+{% endcomment %}
+<h3 class="h4">{{ 'blogs.sidebar.recent_articles' | t }}</h3>
+<ul class="no-bullets">
+  {% for article in blogs[blog.handle].articles limit:6 %}
+  <li>
+    <strong><a href="{{ article.url }}">{{ article.title }}</a></strong>
+  </li>
+  <li class="article-cmt">
+    <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'month_day_year' }}</time>
+  </li>
+  <li class="article-excerpt">
+    {{ article.content | strip_html | truncatewords: 20 }}
+  </li>
+  <hr>
+  {% endfor %}
+</ul>
+
+{% comment %}
+Blog tags
+{% endcomment %}
+{% if blog.all_tags.size > 0 %}
+<h3 class="h4">{{ 'blogs.sidebar.categories' | t }}</h3>
+<ul class="no-bullets">
+  {% for tag in blog.all_tags %}
+  {% if current_tags contains tag %}
+  <li>{{ tag }}</li>
+  {% else %}
+  <li>{{ tag | link_to_tag: tag }}</li>
+  {% endif %}
+  <hr>
+  {% endfor %}
+</ul>
+{% endif %}
+
+{% if settings.sidebar_custom_enable %}
+
+{% if settings.sidebar_product_collection !=""%}
+
+<ul class="" id="wpf_carousel">
+  {% for product in collections[settings.sidebar_product_collection].products %}
+  <li>
+    <img src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}">
+    <div class="carousel-caption">
+      <a href="{{ product.url | within: collection }}" class="btn btn-default">SHOP NOW</a>
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+
+<hr>
+{% endif %}
+{% if settings.sidebar_product_collection1 !=""%}
+<div class="sidebar_img_container">
+  <img src="{% if collections[settings.sidebar_product_collection1].image %}{{ collections[settings.sidebar_product_collection1].image | img_url: 'large' }}{% else %}{{ settings.slider_1 | img_url: 'large', format: 'jpg'  }}{% endif %}" alt="">
+  <a href="{{ collections[settings.sidebar_product_collection1].url }}">
+    <button type="button" class="wpf_btn">View More</button>
+  </a>
+</div>
+<hr>
+{% endif %}
+{% if settings.sidebar_img_1 !=""%}
+<div class="sidebar_img_container text-center">
+  <img src="{{ settings.sidebar_img_1 | img_url: 'large', format: 'jpg'  }}" alt="sidebar first-child img" title="">
+</div>
+<hr>
+{% endif %}
+{% if settings.sidebar_img_1 !=""%}
+<div class="sidebar_img_container text-center">
+  <img src="{{ settings.sidebar_img | img_url: 'large', format: 'jpg'  }}" alt="sidebar second img" title="">
+</div>
+{% endif %}
+{% endif %}

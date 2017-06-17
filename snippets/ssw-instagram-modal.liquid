@@ -1,0 +1,80 @@
+<div id="ssw-instagram-modal" class="ssw-modal ssw-fade" aria-hidden="true" role="modal" data-auto-align="true">
+  <div class="ssw-modal-dialog">
+    <div class="ssw-modal-content">
+      <div class="ssw-modal-body">
+        <button type="button" class="ssw-close ssw-close-modal" data-dismiss="ssw-modal"
+                aria-hidden="true">&times;</button>
+        <div class="ssw-instagram-content">
+          <div class="ssw-instagram-container">
+            <div class="ssw-instagram-image ssw-text-center">
+              <div class="ssw-instagram-image-wrapper ssw-hide">
+                <img class="ssw-hide" src="">
+
+                <div class="ssw-page-loading ssw-img-loading">
+                  <span class="ssw-spin ssw-loader"></span>
+                </div>
+              </div>
+              <div class="ssw-instagram-video-wrapper ssw-hide"></div>
+            </div>
+            <div class="ssw-instagram-details">
+              <div class="ssw-instagram-owner">
+                <a href="" class="ssw-instagram-owner-link ssw-thumb" target="_blank">
+                  <img src="" class="ssw-instagram-owner-image ssw-img-circle">
+                </a>
+                <a href="" class="ssw-instagram-owner-link" target="_blank" title="Owner FullName">Owner Username</a>
+              </div>
+              <div class="ssw-instagram-detail-title"></div>
+              <div class="ssw-instagram-detail-products"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <i class="ssw-icon-left-open-big ssw-prev"></i>
+      <i class="ssw-icon-right-open-big ssw-next"></i>
+    </div>
+  </div>
+</div>
+<div role="ssw-modal" aria-hidden="true" class="ssw-modal ssw-hide ssw-fade ssw-add-to-cart-dialog" id="ssw-instagram-add-to-cart-dialog" data-resource="instagram_gallery">
+  <div class="ssw-modal-dialog">
+    <div class="ssw-modal-content">
+      <div class="ssw-modal-body">
+        <button aria-hidden="true" data-dismiss="ssw-modal" class="ssw-close" type="button" onclick="ssw('#ssw-instagram-modal').sswModal();">&times;</button>
+        <div class="product-variants-modal-loader ssw-loading" style="position: absolute;display: none;width: 0;height: 0;left: 50%;top: 50%;">
+          <span class="ssw-spin ssw-loader" style="margin-left: -14px;margin-top: -14px;"></span>
+        </div>
+        <form class="ssw-variant-options">
+          <div class="ssw-product-variant-col">
+            <img src="" class="ssw-variant-image" onload="this.removeAttribute('style')">
+          </div>
+          <div class="ssw-product-variant-col ssw-product-variant-col-form">
+            <h3 class="ssw-product-variant-choose-option-text">Choose Options</h3>
+            <div class="ssw-product-variant-select-alert ssw-alert ssw-alert-warning" style="display:none;">{{ ssw_translate_fave_variant_all_options_select_alert }}</div>
+            <div class="ssw-variant-option-template ssw-variant-option" style="display: none">
+              <p class="ssw-variant-option-title"></p>
+              <div class="ssw-variant-option-value" style="display: none">
+                <input type="radio">
+                <label></label>
+              </div>
+            </div>
+            <input class="ssw-product-variant-id" type="hidden" name="variant_id">
+            <div class="ssw-product-variant-cart-error ssw-alert ssw-alert-danger" style="display:none;"></div>
+          </div>
+        </form>
+        <div class="ssw-clearfix"></div>
+      </div>
+      <div class="ssw-modal-footer">
+        <span class="ssw-product-cart-wrapper">
+          <span class="ssw-product-variant-price"><span></span></span>
+          <a class="ssw-product-variant-add-to-cart btn button" href="javascript:void(0)">
+            <span class="ssw-product-cart-add"><i class="ssw-icon-cart"></i> {{ 'socialshopwave.add_to_cart' | t }}</span>
+            <span class="ssw-product-cart-added" style="display:none" onclick="location.pathname = '/cart'; event.stopPropagation();"><i class="ssw-icon-check"></i> {{ ssw_translate_checkout }}</span>
+            <span class="ssw-product-cart-adding" style="display:none"><i class="ssw-icon-spin ssw-spin"></i> {{ ssw_translate_fave_variant_adding_to_cart }}</span>
+            <span class="ssw-product-cart-soldout" style="display:none">{{ 'socialshopwave.sold_out' | t }}</span>
+            <span class="ssw-product-cart-unavailable" style="display:none">{{ ssw_translate_unavailable }}</span>
+          </a>
+        </span>
+        <h3 class="ssw-product-variants-title"></h3>
+      </div>
+    </div>
+  </div>
+</div>

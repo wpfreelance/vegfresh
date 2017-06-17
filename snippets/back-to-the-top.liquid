@@ -1,0 +1,74 @@
+{% comment %}
+Reduce below value if you need the back to the top button to appear higher up on the page.
+That value is in pixels.
+{% endcomment %}
+{% assign vertical_offset_for_trigger = 300 %}
+{% comment %}
+Vertical offset from bottom of browser for the position of the button.
+{% endcomment %}
+{% assign position_from_bottom = '4em' %}
+<a href="#" title="Back to the top" class="back-to-top">
+  <i class="fa fa-angle-up"></i>
+</a>
+{{ '//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css' | stylesheet_tag }}
+<style>
+.back-to-top {
+  position: fixed;
+  bottom: {{ position_from_bottom }};
+  right: 10px;
+  text-decoration: none;
+  color: #fff;
+  display: none;
+  z-index: 60000;
+  width: 50px;
+  height: 50px;
+  background-color: #be926f;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 46px;
+  cursor: pointer;
+  border: 2px solid #fff;
+  transition: ease all 0.5s;
+  -webkit-transition: ease all 0.5s;
+  -moz-transition: ease all 0.5s;
+  -o-transition: ease all 0.5s;
+
+}
+.back-to-top i {
+  vertical-align: middle;
+}
+.back-to-top span {
+  padding-left: 0.5em;
+}
+.back-to-top i + span {
+  padding-left: 0;
+}
+.back-to-top:hover {
+  text-decoration: none;
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+
+}
+</style>
+<script>
+window.onload = function() {
+  jQuery(function($) {
+    var offset = {{ vertical_offset_for_trigger }};
+    var duration = 500;
+    $(window).scroll(function() {
+      if ($(this).scrollTop() > offset) {
+        $('.back-to-top').fadeIn(duration);
+      }
+      else {
+        $('.back-to-top').fadeOut(duration);
+      }
+    });
+    $('.back-to-top').unbind('click.smoothscroll').bind('click', function(e) {
+      e.preventDefault();
+      $('html, body').animate( { scrollTop: 0 }, duration);
+      return false;
+    })
+  });
+}
+</script>

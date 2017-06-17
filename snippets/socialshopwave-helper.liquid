@@ -1,0 +1,113 @@
+{% assign ssw_proxy_url = '/apps/ssw-instagram' %}
+{% assign ssw_domain = 'socialshopwave.com' %}
+{% assign ssw_app = 0 %}
+<script type="text/javascript">
+  {% if customer %}
+  (function (location) {
+    if(!location.pathname.indexOf('/account/register') || !location.pathname.indexOf('/account/login')) {
+      document.body.style.display = 'none';
+      location.pathname = '/';
+    }
+  })(location);
+  {% endif %}
+
+  var HE_DOMAIN = 'http://{{ ssw_domain }}';
+  Ssw = {};
+  function sswRun(application) {
+    if(typeof ssw != typeof 'function') {
+      var _loadSswLib = setInterval(function(){
+        if (typeof ssw != 'undefined' && ssw) {
+          clearInterval(_loadSswLib);
+          window.sswIsAppPro = function(app){
+            return (typeof window.ssw.apps['default'] !== 'undefined' && window.ssw.apps['default'] != 'lite' && window.ssw.apps['default'] != 'starter') || (typeof window.ssw.apps[app] !== 'undefined' && window.ssw.apps[app] != 'free' && window.ssw.apps[app] != 'starter');
+          };
+          application(ssw);
+        }
+      }, 10);
+    } else application(ssw);
+  }
+  sswApp = {"default":{{ ssw_app }}};
+  {% if customer %}
+  sswApp.customer = {
+    id: {{ customer.id }},
+    email: '{{ customer.email }}',
+    addresses: [
+      {% for address in customer.addresses %}
+      {
+        first_name: '{{ address.first_name | replace: "'", "\\'" }}',
+        phone: '{{ address.phone }}'
+      },
+      {% endfor %}
+    ],
+    last_name: '{{ customer.last_name | replace: "'", "\\'" }}',
+    first_name: '{{ customer.first_name | replace: "'", "\\'" }}',
+    has_account: {{ customer.has_account }},
+    addresses_count: {{ customer.addresses_count }},
+    default_address: [
+      {% for address in customer.default_address %}
+      {
+        first_name: '{{ address.first_name | replace: "'", "\\'" }}',
+        phone: '{{ address.phone }}'
+      },
+      {% endfor %}
+    ],
+    accepts_marketing: {{ customer.accepts_marketing }}
+  };
+  {% endif %}
+  var currency_format = "{{ shop.money_with_currency_format | replace: '"', '\\"' }}";
+  var shop_name = "{{ shop.name | replace: '"', '\\"' }}";
+  sswProxyUrl = {{ ssw_proxy_url | json }};
+  sswLangs = {
+    data: {},
+    add: function(key, value) {
+      this.data[key] = value;
+    },
+    t: function(key, params) {
+      var value = key;
+      if (typeof this.data[key] !== 'undefined') {
+        value = this.data[key];
+      }
+      value = (value.indexOf("translation missing:") < 0) ? value : key;
+      if (params) {
+        value = value.replace(/%(\d+)%/g, function(match, number) {
+          return (typeof params[number] != 'undefined') ? params[number] : match;
+        });
+      }
+      return value;
+    },
+    p: function(key_singular, key_plural, count, params) {
+      if (count == 1) {
+        return this.t(key_singular, params);
+      } else {
+        return this.t(key_plural, params);
+      }
+    }
+  };
+  {% include 'ssw-langs' %}
+</script>
+<style id="ssw-temp-styles">
+  #ssw-cart-modal, #ssw-suggest-login, .ssw-modal, .ssw-hide, .ssw-dropdown-menu, #ssw-topauth ul.ssw-dropdown-menu,.ssw-widget-login ul.ssw-dropdown-menu{display: none;}
+</style>
+{{ 'ssw-app.js' | asset_url | script_tag }}
+<style id="ssw-design-preview"></style>
+{% if customer %}
+  <input id="ssw_cid" type="hidden" value="{{ customer.id}}" />
+{% else %}
+  <input id="ssw_cid" type="hidden" value="0" />
+{% endif %}
+{% capture ssw_auto_integrate %}{% include 'ssw-auto-integrate' %}{% endcapture %}
+{% unless ssw_auto_integrate contains 'Liquid error' %}
+	{{ ssw_auto_integrate }}
+{% endunless %}
+{% capture ssw_widget_login_bar %}{% include 'ssw-widget-login-bar' %}{% endcapture %}
+{% unless ssw_widget_login_bar contains 'Liquid error' %}
+	{{ ssw_widget_login_bar }}
+{% endunless %}
+{% capture socialshopwave_fb %}{% include 'socialshopwave-fb' %}{% endcapture %}
+{% unless socialshopwave_fb contains 'Liquid error' %}
+	{{ socialshopwave_fb }}
+{% endunless %}
+{% capture socialshopwave_gplus %}{% include 'socialshopwave-gplus' %}{% endcapture %}
+{% unless socialshopwave_gplus contains 'Liquid error' %}
+	{{ socialshopwave_gplus }}
+{% endunless %}

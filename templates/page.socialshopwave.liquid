@@ -1,0 +1,69 @@
+{% if page.handle == 'collections' %}
+<div id="ssw-page" class="ssw-page ssw-clearfix">
+  {% include 'ssw-widget-listing' with 1 %}
+  <script type="text/javascript">
+    var collectionTrackerInterval = setInterval(function(){
+      if (typeof trackShopStats == "function") {
+        clearInterval(collectionTrackerInterval);
+        trackShopStats('collection_page_view', 'all');
+      }
+    }, 1000);
+  </script>
+</div>
+{% else %}
+{% if page.handle == 'share-review' %}
+<div id="ssw-page" class="ssw-page ssw-clearfix">
+  {% include 'ssw-widget-share-review' %}
+</div>
+{% else %}
+<div id="ssw-page" class="ssw-page ssw-clearfix">
+  <div class="ssw-page-loading">    
+    <span class="ssw-spin ssw-loader"></span>
+  </div>
+</div>
+<script type="text/javascript">
+  if(typeof sswPageInterval == 'undefined'){
+    var sswPageInterval= setInterval(function(){
+      if(typeof sswJqLoaded != 'undefined' && sswJqLoaded){
+        clearInterval(sswPageInterval);
+        var path_name = window.location.pathname;
+        var ssw_substr = '/pages/';
+        var ssw_index = path_name.indexOf(ssw_substr) + ssw_substr.length;
+        var ssw_request_url = sswProxyUrl + '/lite2/' + path_name.substr(ssw_index);
+        if (path_name.indexOf('pages/profile-edit') > -1) {
+          ssw_request_url = sswProxyUrl + '/lite2/profile-edit';
+        }
+        else if (path_name.substr(ssw_index) == 'feed' || path_name.indexOf('pages/profile') > -1)
+          ssw_request_url = sswProxyUrl + '/lite2/' + path_name.substr(ssw_index) + '/';
+        else if(path_name.substr(ssw_index) == 'collections' || path_name.substr(ssw_index) == 'people' || path_name.substr(ssw_index) == 'invite' || path_name.substr(ssw_index) == 'faves' || path_name.substr(ssw_index) == 'edit-notifications' || path_name.substr(ssw_index) == 'reviews')
+          ssw_request_url = sswProxyUrl + '/lite2/' + path_name.substr(ssw_index);
+        var params = location.search.substring(1);
+        if(params){
+          ssw_request_url += '?' + params;
+        }
+        if(path_name.indexOf('pages/collections') && window.location.hash.substring(1)){
+          if(params){
+            ssw_request_url += '&' + window.location.hash.substring(1);
+          }
+          else{
+            ssw_request_url += '?' + window.location.hash.substring(1);
+          }
+        }
+        var data = {'_sid': sswCookie('hesid'), 'hash_key' : sswCookie('hash_key')};
+
+        if (sswCookie('mail_id')) {
+          data.resource_id = sswCookie('mail_id');
+          data.resource_type = 'mail';
+        }
+        ssw.get(ssw_request_url, data, 'html').done(function(response){
+          ssw('#ssw-page').css('opacity', 0);
+          ssw('#ssw-page').html(response).animate({
+            opacity: "1"
+          }, 50);
+        });
+      }
+    }, 300);
+  }
+</script>
+{% endif %}
+{% endif %}

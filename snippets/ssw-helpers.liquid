@@ -1,0 +1,5 @@
+
+{% capture ssw_instagram_helper %}{% include 'ssw-instagram-helper' %}{% endcapture %}
+{% unless ssw_instagram_helper contains 'Liquid error' %}
+	{{ ssw_instagram_helper }}
+{% endunless %}
